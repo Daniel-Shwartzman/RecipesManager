@@ -1,8 +1,25 @@
 from flask import Flask
+from dotenv import load_dotenv
 from website.controller import routes
+from website.module import db
+import os
 
-app = Flask(__name__, template_folder='website/templates')
-app.register_blueprint(routes)
+load_dotenv()
+
+def create_app():
+    app = Flask(__name__, template_folder='website/templates', static_folder='website/static')
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
+
+    db.init_app(app)
+
+    with app.app_context():
+        db.create_all()
+
+    app.register_blueprint(routes)
+
+    return app
 
 if __name__ == '__main__':
+    app = create_app()
     app.run(host="0.0.0.0" ,debug=True)
