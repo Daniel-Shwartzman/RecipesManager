@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table class="table table-hover table-bordered table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Recipe Name</th>
+        <th>Category</th>
+        <th>Ingredients</th>
+        <th>Instructions</th>
+    </tr>
+{% for recipe in our_recipes %}
+{% if recipe.category == "desserts" %}
+    <tr>
+    <td>{{ recipe.id }}<br/></td>
+    <td>{{ recipe.name }}<br/></td>  
+    <td>{{ recipe.category }}<br/></td>
+    <td>{{ recipe.ingredients }}<br/></td>
+    <td>{{ recipe.instructions }}</td>
+    </tr>
+{% endif %}
+{% endfor %}
+</table>
+{% endblock %}
