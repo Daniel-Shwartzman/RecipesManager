@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash
+from flask import Blueprint, render_template, flash, request
 from website.forms import RecipeForm
 from website.module import db, Recipe
 
@@ -50,3 +50,35 @@ def dairy():
 def desserts():
     our_recipes = Recipe.query.order_by(Recipe.date_created).all()
     return render_template('desserts.html', our_recipes=our_recipes)
+
+@routes.route('/update-recipe/<int:id>', methods=['GET', 'POST'])
+def update_recipe(id):
+    recipe_to_update = Recipe.query.get_or_404(id)
+    form = RecipeForm(obj=recipe_to_update)
+
+    if form.validate_on_submit():
+        recipe_to_update.name = form.name.data
+        recipe_to_update.category = form.category.data
+        recipe_to_update.ingredients = form.ingredients.data
+        recipe_to_update.instructions = form.instructions.data
+        try:
+            db.session.commit()
+            flash(f'Recipe updated for {recipe_to_update.name}!', 'success')
+            return render_template('update.html', form=form, recipe_to_update=recipe_to_update)
+        except:
+            flash('There was an issue updating your recipe.', 'danger')
+    return render_template('update.html', form=form, recipe_to_update=recipe_to_update, id=id)
+
+@routes.route('/delete-recipe/<int:id>')
+def delete_recipe(id):
+    recipe_to_delete = Recipe.query.get_or_404(id)
+    name = None
+    form = RecipeForm()
+    try:
+        db.session.delete(recipe_to_delete)
+        db.session.commit()
+        flash(f'Recipe deleted for {recipe_to_delete.name}!', 'success')
+        return render_template('recipe.html', form=form, name=name)
+    except:
+        flash('There was an issue deleting your recipe.', 'danger')
+    return render_template('recipe.html', form=form, name=name)
