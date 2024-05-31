@@ -13,7 +13,7 @@
 {% if recipe.category == "dairy" %}
     <tr>
     <td>{{ recipe.id }}<br/></td>
-    <td>{{ recipe.name }}<br/></td>  
+    <td><a href="{{ url_for('routes.update_recipe', id=recipe.id) }}">{{ recipe.name }}</a><br/></td>  
     <td>{{ recipe.category }}<br/></td>
     <td>{{ recipe.ingredients }}<br/></td>
     <td>{{ recipe.instructions }}</td>

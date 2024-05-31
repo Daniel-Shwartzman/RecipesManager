@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+{% if name %}
+    <h1> Recipe {{ name }} Updated!</h1>
+{% else %}
+    <h1>Enter the updates:</h1>
+    <br/>
+    <form action="/update-recipe/{{ recipe_to_update.id }}" method="post">
+        {{ form.hidden_tag() }}
+
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control") }}<br/>
+
+        {{ form.category.label(class="form-label") }}
+        {{ form.category(class_="form-control") }}<br/>
+
+        {{ form.ingredients.label(class="form-label") }}
+        {{ form.ingredients(class="form-control") }}<br/>
+
+        {{ form.instructions.label(class="form-label") }}
+        {{ form.instructions(class="form-control") }}<br/>
+
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('routes.delete_recipe', id=id) }}" class="btn btn-danger">Delete</a>
+    </form>
+{% endif %}
+{% endblock %}
