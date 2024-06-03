@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, request
+from flask import Blueprint, render_template, flash, redirect, url_for
 from website.forms import RecipeForm
 from website.module import db, Recipe
 
@@ -33,7 +33,7 @@ def admin():
 
 @routes.route('/salads')
 def salads():
-    salads = Recipe.query.filter_by(category='salad').all()
+    salads = Recipe.query.filter_by(category='salads').all()
     return render_template('salads.html', salads=salads)
 
 @routes.route('/meat')
@@ -50,24 +50,6 @@ def dairy():
 def desserts():
     desserts = Recipe.query.filter_by(category='dessert').all()
     return render_template('desserts.html', desserts=desserts)
-
-@routes.route('/update-recipe/<int:id>', methods=['GET', 'POST'])
-def update_recipe(id):
-    recipe_to_update = Recipe.query.get_or_404(id)
-    form = RecipeForm(obj=recipe_to_update)
-
-    if form.validate_on_submit():
-        recipe_to_update.name = form.name.data
-        recipe_to_update.category = form.category.data
-        recipe_to_update.ingredients = form.ingredients.data
-        recipe_to_update.instructions = form.instructions.data
-        try:
-            db.session.commit()
-            flash(f'Recipe updated for {recipe_to_update.name}!', 'success')
-            return render_template('update.html', form=form, recipe_to_update=recipe_to_update)
-        except:
-            flash('There was an issue updating your recipe.', 'danger')
-    return render_template('update.html', form=form, recipe_to_update=recipe_to_update, id=id)
 
 @routes.route('/delete-recipe/<int:id>')
 def delete_recipe(id):
@@ -87,3 +69,21 @@ def delete_recipe(id):
 def recipe(id):
     recipe = Recipe.query.get_or_404(id)
     return render_template('recipe.html', recipe=recipe)
+
+@routes.route('/update-recipe/<int:id>', methods=['GET', 'POST'])
+def update_recipe(id):
+    recipe_to_update = Recipe.query.get_or_404(id)
+    form = RecipeForm(obj=recipe_to_update)
+
+    if form.validate_on_submit():
+        recipe_to_update.name = form.name.data
+        recipe_to_update.category = form.category.data
+        recipe_to_update.ingredients = form.ingredients.data
+        recipe_to_update.instructions = form.instructions.data
+        try:
+            db.session.commit()
+            flash(f'Recipe updated for {recipe_to_update.name}!', 'success')
+            return redirect(url_for('routes.recipe', id=id))
+        except:
+            flash('There was an issue updating your recipe.', 'danger')
+    return render_template('update.html', form=form, recipe_to_update=recipe_to_update, id=id)

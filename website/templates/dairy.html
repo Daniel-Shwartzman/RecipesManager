@@ -5,9 +5,9 @@
 {% for d in dairy %}
 <div class="shadow p-3 mb-5 bg-body rounded w-50">
     <h2>{{ d.name }}</h2><hr>
-    <img src="https://www.foodandwine.com/thmb/Wd4lBRZz3X_8qBr69UOu2m7I2iw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/classic-cheese-pizza-FT-RECIPE0422-31a2c938fc2546c9a07b7011658cfd05.jpg" width="300" height="200">
     <br/><br/>
     <a href="{{ url_for('routes.recipe', id=d.id) }}" class="btn btn-outline-primary">View Recipe</a>
+    <a href="{{ url_for('routes.update_recipe', id=d.id) }}" class="btn btn-outline-primary">Update Recipe</a>
 </div>
 {% endfor %}
 {% endblock %}
