@@ -1,15 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Dessert Recipes:</h1>
 
 {% for dessert in desserts %}
 <div class="shadow p-3 mb-5 bg-body rounded w-50">
-    <h2>{{ d.name }}</h2><hr>
-    <h4>Ingredients:</h4>
-    {{ d.ingredients }}<br/><hr>
-    <h4>Instructions:</h4>
-    {{ d.instructions }}<br/><hr>
+    <h2>{{ dessert.name }}</h2><hr>
+    <br/><br/>
+    <a href="{{ url_for('routes.recipe', id=dessert.id) }}" class="btn btn-outline-primary">View Recipe</a>
+    <a href="{{ url_for('routes.update_recipe', id=dessert.id) }}" class="btn btn-outline-primary">Update Recipe</a>
 </div>
 {% endfor %}
 {% endblock %}

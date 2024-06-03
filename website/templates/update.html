@@ -29,7 +29,7 @@
         {{ form.instructions.label(class="form-label") }}
         {{ form.instructions(class="form-control") }}<br/>
 
-        {{ form.submit(class="btn btn-primary") }}
+        {{ form.submit(class="btn btn-outline-primary") }}
         <a href="{{ url_for('routes.delete_recipe', id=id) }}" class="btn btn-danger">Delete</a>
     </form>
 {% endif %}
