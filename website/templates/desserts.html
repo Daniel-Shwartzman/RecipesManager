@@ -1,24 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<table class="table table-hover table-bordered table-striped">
-    <tr>
-        <th>ID</th>
-        <th>Recipe Name</th>
-        <th>Category</th>
-        <th>Ingredients</th>
-        <th>Instructions</th>
-    </tr>
-{% for recipe in our_recipes %}
-{% if recipe.category == "desserts" %}
-    <tr>
-    <td>{{ recipe.id }}<br/></td>
-    <td><a href="{{ url_for('routes.update_recipe', id=recipe.id) }}">{{ recipe.name }}</a><br/></td>  
-    <td>{{ recipe.category }}<br/></td>
-    <td>{{ recipe.ingredients }}<br/></td>
-    <td>{{ recipe.instructions }}</td>
-    </tr>
-{% endif %}
+<h1>Dessert Recipes:</h1>
+
+{% for dessert in desserts %}
+<div class="shadow p-3 mb-5 bg-body rounded w-50">
+    <h2>{{ d.name }}</h2><hr>
+    <h4>Ingredients:</h4>
+    {{ d.ingredients }}<br/><hr>
+    <h4>Instructions:</h4>
+    {{ d.instructions }}<br/><hr>
+</div>
 {% endfor %}
-</table>
 {% endblock %}

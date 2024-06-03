@@ -2,25 +2,12 @@
 
 {% block content %}
 
-{% for message in get_flashed_messages() %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-{% endfor %}
-
-{% if name %}
-    <h1> Recipe {{ name }} added!</h1>
-{% else %}
-    <h1>Enter a recipe:</h1>
-    <br/>
-    <form method="post">
-        {{ form.hidden_tag() }}
-        {{ form.name.label(class="form-label") }} {{ form.name(class="form-control") }}<br/>
-        {{ form.category.label(class="form-label") }} {{ form.category(class="form-control") }}<br/>
-        {{ form.ingredients.label(class="form-label") }} {{ form.ingredients(class="form-control") }}<br/>
-        {{ form.instructions.label(class="form-label") }} {{ form.instructions(class="form-control") }}<br/>
-        {{ form.submit(class="btn btn-primary") }}
-    </form>
-{% endif %}
+<div class="shadow p-3 mb-5 bg-body rounded w-50">
+    <h2>{{ recipe.name }}</h2><hr>
+    <h4>Ingredients:</h4>
+    {{ recipe.ingredients }}<br/><hr>
+    <h4>Instructions:</h4>
+    {{ recipe.instructions }}<br/><hr>
+    <img src="https://www.foodandwine.com/thmb/Wd4lBRZz3X_8qBr69UOu2m7I2iw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/classic-cheese-pizza-FT-RECIPE0422-31a2c938fc2546c9a07b7011658cfd05.jpg" width="300" height="200">
+</div>
 {% endblock %}

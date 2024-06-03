@@ -24,7 +24,7 @@ def create_recipe():
         form.ingredients.data = ''
         form.instructions.data = ''
         flash(f'Recipe created for {name}!', 'success')
-    return render_template('recipe.html', form=form, name=name)
+    return render_template('add-recipe.html', form=form, name=name)
 
 @routes.route('/admin')
 def admin():
@@ -33,23 +33,23 @@ def admin():
 
 @routes.route('/salads')
 def salads():
-    our_recipes = Recipe.query.order_by(Recipe.date_created).all()
-    return render_template('salads.html', our_recipes=our_recipes)
+    salads = Recipe.query.filter_by(category='salad').all()
+    return render_template('salads.html', salads=salads)
 
 @routes.route('/meat')
 def meat():
-    our_recipes = Recipe.query.order_by(Recipe.date_created).all()
-    return render_template('meat.html', our_recipes=our_recipes)
+    meat = Recipe.query.filter_by(category='meat').all()
+    return render_template('meat.html', meat=meat)
 
 @routes.route('/dairy')
 def dairy():
-    our_recipes = Recipe.query.order_by(Recipe.date_created).all()
-    return render_template('dairy.html', our_recipes=our_recipes)
+    dairy = Recipe.query.filter_by(category='dairy').all()
+    return render_template('dairy.html', dairy=dairy)
 
 @routes.route('/desserts')
 def desserts():
-    our_recipes = Recipe.query.order_by(Recipe.date_created).all()
-    return render_template('desserts.html', our_recipes=our_recipes)
+    desserts = Recipe.query.filter_by(category='dessert').all()
+    return render_template('desserts.html', desserts=desserts)
 
 @routes.route('/update-recipe/<int:id>', methods=['GET', 'POST'])
 def update_recipe(id):
@@ -82,3 +82,8 @@ def delete_recipe(id):
     except:
         flash('There was an issue deleting your recipe.', 'danger')
     return render_template('recipe.html', form=form, name=name)
+
+@routes.route('/recipes/<int:id>')
+def recipe(id):
+    recipe = Recipe.query.get_or_404(id)
+    return render_template('recipe.html', recipe=recipe)
