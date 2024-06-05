@@ -1,8 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>You Searched For:</h2>
+<h2>You Searched For: <em>{{ searched }}</em></h2><br/>
+{% if not recipes %}
+    <h3>No recipes with the name: <strong>{{ searched }}</strong> found...</h3>
+{% endif %}
 {% for recipe in recipes %}
-    <a href="{{ url_for('routes.recipe', id=recipe.id) }}">{{ recipe.name }}<br/></a>
+    <div class="shadow p-3 mb-5 bg-body rounded w-50">
+        <h2>{{ recipe.name }}</h2><hr>
+        <br/><br/>
+        <a href="{{ url_for('routes.recipe', id=recipe.id) }}" class="btn btn-outline-primary">View Recipe</a>
+        <a href="{{ url_for('routes.update_recipe', id=recipe.id) }}" class="btn btn-outline-primary">Update Recipe</a>
+        <a href="{{ url_for('routes.delete_recipe', id=recipe.id) }}" class="btn btn-outline-danger">Delete</a>
+    </div>
 {% endfor %}
 {% endblock %}
