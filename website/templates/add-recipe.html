@@ -22,5 +22,8 @@
         {{ form.instructions.label(class="form-label") }} {{ form.instructions(class="form-control") }}<br/>
         {{ form.submit(class="btn btn-primary") }}
     </form>
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name="instructions") }}
+    {{ ckeditor.config(name="ingredients") }}
 {% endif %}
 {% endblock %}

@@ -17,13 +17,13 @@
     <h4>Ingredients:</h4>
     <ul>
         {% for ingredient in recipe.ingredients.split('\n') %}
-            <li>{{ ingredient }}</li>
+            <li>{{ ingredient|safe }}</li>
         {% endfor %}
     </ul>
     <hr>
     
     <h4>Instructions:</h4>
-    <p>{{ recipe.instructions }}</p>
+    <p>{{ recipe.instructions|safe }}</p>
 </div>
 
 {% if recipe.category == "dairy" %}

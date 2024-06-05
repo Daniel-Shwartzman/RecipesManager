@@ -3,3 +3,4 @@ Flask-WTF
 python-dotenv
 Flask-SQLAlchemy
 psycopg2-binary
+Flask-CKEditor
