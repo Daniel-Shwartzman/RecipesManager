@@ -60,10 +60,10 @@ def delete_recipe(id):
         db.session.delete(recipe_to_delete)
         db.session.commit()
         flash(f'Recipe deleted for {recipe_to_delete.name}!', 'success')
-        return render_template('recipe.html', form=form, name=name)
+        return redirect(url_for('routes.create_recipe', name=name, form=form))
     except:
         flash('There was an issue deleting your recipe.', 'danger')
-    return render_template('recipe.html', form=form, name=name)
+    return render_template('add-recipe.html', form=form, name=name)
 
 @routes.route('/recipes/<int:id>')
 def recipe(id):
