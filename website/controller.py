@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
-from website.forms import RecipeForm
+from website.forms import RecipeForm, SearchForm
 from website.module import db, Recipe
 
 routes = Blueprint('routes', __name__)
@@ -87,3 +87,20 @@ def update_recipe(id):
         except:
             flash('There was an issue updating your recipe.', 'danger')
     return render_template('update.html', form=form, recipe_to_update=recipe_to_update, id=id)
+
+# Pass the form to the to Navbar
+@routes.context_processor
+def base():
+    form = SearchForm()
+    return dict(form=form)
+
+# Search for recipes by name
+@routes.route('/search', methods=['POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        searched = form.searched.data
+        # Filter and order the results before converting to a list
+        recipes = Recipe.query.filter(Recipe.name.contains(searched)).order_by(Recipe.name).all()
+        return render_template('search.html', form=form, searched=searched, recipes=recipes)
+    return render_template('search.html', form=form, recipes=[])

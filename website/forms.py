@@ -15,3 +15,7 @@ class RecipeForm(FlaskForm):
     ingredients = TextAreaField('Ingredients:', validators=[DataRequired()])
     instructions = TextAreaField('Instructions:', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class SearchForm(FlaskForm):
+    searched = StringField('Search:', validators=[DataRequired()])
+    submit = SubmitField('Submit')
