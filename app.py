@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_ckeditor import CKEditor
 from dotenv import load_dotenv
 from website.controller import routes
 from website.module import db
@@ -17,6 +18,7 @@ def create_app():
         db.create_all()
 
     app.register_blueprint(routes)
+    CKEditor(app)
 
     return app
 
