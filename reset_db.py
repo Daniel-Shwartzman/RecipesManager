@@ -1,4 +1,4 @@
-from website.module import db
+from website.models import db
 from app import create_app
 
 app = create_app()

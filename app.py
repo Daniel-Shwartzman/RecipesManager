@@ -2,7 +2,7 @@ from flask import Flask
 from flask_ckeditor import CKEditor
 from dotenv import load_dotenv
 from website.controller import routes
-from website.module import db
+from website.models import db
 import os
 
 load_dotenv()

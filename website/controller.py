@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
 from website.forms import RecipeForm, SearchForm
-from website.module import db, Recipe
+from website.models import db, Recipe
 
 routes = Blueprint('routes', __name__)
 
