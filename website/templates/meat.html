@@ -8,6 +8,7 @@
     <br/><br/>
     <a href="{{ url_for('routes.recipe', id=m.id) }}" class="btn btn-outline-primary">View Recipe</a>
     <a href="{{ url_for('routes.update_recipe', id=m.id) }}" class="btn btn-outline-primary">Update Recipe</a>
+    <a href="{{ url_for('routes.delete_recipe', id=m.id) }}" class="btn btn-outline-danger">Delete</a>
 </div>
 {% endfor %}
 {% endblock %}
