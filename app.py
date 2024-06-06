@@ -1,16 +1,17 @@
 from flask import Flask
 from flask_ckeditor import CKEditor
 from dotenv import load_dotenv
-from website.controller import routes
+from website.routes import routes
 from website.models import db
 import os
 
 load_dotenv()
 
 def create_app():
-    app = Flask(__name__, template_folder='website/templates', static_folder='website/static')
+    app = Flask(__name__, template_folder='website/templates', static_folder='static')
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
+    app.config['UPLOAD_FOLDER'] = 'static/images'
 
     db.init_app(app)
 

@@ -5,7 +5,11 @@
 {% for salad in salads %}
 <div class="shadow p-3 mb-5 bg-body rounded w-50">
     <h2>{{ salad.name }}</h2><hr>
+    <br/>
+    {% if salad.image %}
+    <img src="{{ salad.image }}" width="300" height="200">
     <br/><br/>
+    {% endif %}    
     <a href="{{ url_for('routes.recipe', id=salad.id) }}" class="btn btn-outline-primary">View Recipe</a>
     <a href="{{ url_for('routes.update_recipe', id=salad.id) }}" class="btn btn-outline-primary">Update Recipe</a>
     <a href="{{ url_for('routes.delete_recipe', id=salad.id) }}" class="btn btn-outline-danger">Delete</a>
