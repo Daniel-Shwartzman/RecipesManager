@@ -5,7 +5,11 @@
 {% for dessert in desserts %}
 <div class="shadow p-3 mb-5 bg-body rounded w-50">
     <h2>{{ dessert.name }}</h2><hr>
+    <br/>
+    {% if dessert.image %}
+    <img src="{{ dessert.image }}" width="300" height="200">
     <br/><br/>
+    {% endif %}
     <a href="{{ url_for('routes.recipe', id=dessert.id) }}" class="btn btn-outline-primary">View Recipe</a>
     <a href="{{ url_for('routes.update_recipe', id=dessert.id) }}" class="btn btn-outline-primary">Update Recipe</a>
     <a href="{{ url_for('routes.delete_recipe', id=dessert.id) }}" class="btn btn-outline-danger">Delete</a>

@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template, flash, redirect, url_for
+import os
+from flask import Blueprint, render_template, flash, redirect, url_for, current_app, request
 from website.forms import RecipeForm, SearchForm
 from website.models import db, Recipe
+from werkzeug.utils import secure_filename
 
 routes = Blueprint('routes', __name__)
 
@@ -15,15 +17,29 @@ def create_recipe():
     if form.validate_on_submit():
         name = Recipe.query.filter_by(name=form.name.data).first()
         if name is None:
-            recipe = Recipe(name=form.name.data, category=form.category.data, ingredients=form.ingredients.data, instructions=form.instructions.data)
+            # Handle file upload
+            image_url = None
+            if form.image.data:
+                file = form.image.data
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+                image_url = os.path.join(current_app.config['UPLOAD_FOLDER'], filename).replace('\\', '/')
+            
+            recipe = Recipe(
+                name=form.name.data, 
+                category=form.category.data, 
+                ingredients=form.ingredients.data, 
+                instructions=form.instructions.data,
+                image=image_url
+            )
             db.session.add(recipe)
             db.session.commit()
-        name = form.name.data
-        form.name.data = ''
-        form.category.data = ''
-        form.ingredients.data = ''
-        form.instructions.data = ''
-        flash(f'Recipe created for {name}!', 'success')
+            name = form.name.data
+            form.name.data = ''
+            form.category.data = ''
+            form.ingredients.data = ''
+            form.instructions.data = ''
+            flash(f'Recipe created for {name}!', 'success')
     return render_template('add-recipe.html', form=form, name=name)
 
 @routes.route('/admin')
@@ -80,6 +96,14 @@ def update_recipe(id):
         recipe_to_update.category = form.category.data
         recipe_to_update.ingredients = form.ingredients.data
         recipe_to_update.instructions = form.instructions.data
+        
+        if 'image' in request.files:  # Check if 'image' file is in the form data
+            file = request.files['image']  # Access the uploaded file
+            if file.filename != '':  # Check if a file was selected
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+                recipe_to_update.image = os.path.join(current_app.config['UPLOAD_FOLDER'], filename).replace('\\', '/')
+
         try:
             db.session.commit()
             flash(f'Recipe updated for {recipe_to_update.name}!', 'success')
@@ -87,6 +111,7 @@ def update_recipe(id):
         except:
             flash('There was an issue updating your recipe.', 'danger')
     return render_template('update.html', form=form, recipe_to_update=recipe_to_update, id=id)
+
 
 # Pass the form to the to Navbar
 @routes.context_processor

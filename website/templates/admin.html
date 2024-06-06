@@ -8,6 +8,7 @@
         <th>Category</th>
         <th>Ingredients</th>
         <th>Instructions</th>
+        <th>Image</th>
     </tr>
 {% for recipe in our_recipes %}
     <tr>
@@ -16,6 +17,7 @@
     <td>{{ recipe.category }}<br/></td>
     <td>{{ recipe.ingredients }}<br/></td>
     <td>{{ recipe.instructions }}</td>
+    <td><img src="{{ url_for('static', filename='images/' + recipe.image) }}" width="50" height="50"></td>
     </tr>
 {% endfor %}
 </table>

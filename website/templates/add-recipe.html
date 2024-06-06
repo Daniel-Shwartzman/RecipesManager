@@ -14,12 +14,13 @@
 {% else %}
     <h1>Enter a recipe:</h1>
     <br/>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         {{ form.name.label(class="form-label") }} {{ form.name(class="form-control") }}<br/>
         {{ form.category.label(class="form-label") }} {{ form.category(class="form-control") }}<br/>
         {{ form.ingredients.label(class="form-label") }} {{ form.ingredients(class="form-control") }}<br/>
         {{ form.instructions.label(class="form-label") }} {{ form.instructions(class="form-control") }}<br/>
+        {{ form.image.label(class="form-label") }} {{ form.image(class="form-control") }}<br/>
         {{ form.submit(class="btn btn-primary") }}
     </form>
     {{ ckeditor.load() }}

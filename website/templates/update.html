@@ -14,7 +14,7 @@
 {% else %}
     <h1>Enter the updates:</h1>
     <br/>
-    <form action="/update-recipe/{{ recipe_to_update.id }}" method="post">
+    <form action="/update-recipe/{{ recipe_to_update.id }}" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
 
         {{ form.name.label(class="form-label") }}
@@ -28,6 +28,9 @@
 
         {{ form.instructions.label(class="form-label") }}
         {{ form.instructions(class="form-control") }}<br/>
+
+        {{ form.image.label(class="form-label") }}
+        {{ form.image(class="form-control") }}<br/>
 
         {{ form.submit(class="btn btn-outline-primary") }}
         <a href="{{ url_for('routes.delete_recipe', id=id) }}" class="btn btn-danger">Delete</a>
