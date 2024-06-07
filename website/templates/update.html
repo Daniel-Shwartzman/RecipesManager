@@ -2,35 +2,36 @@
 
 {% block content %}
 
-{% for message in get_flashed_messages() %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-{% endfor %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endwith %}
 
 {% if name %}
     <h1> Recipe {{ name }} Updated!</h1>
 {% else %}
-    <h1>Enter the updates:</h1>
-    <br/>
+    <h1>Enter the updates:</h1><hr>
     <form action="/update-recipe/{{ recipe_to_update.id }}" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
 
-        {{ form.name.label(class="form-label") }}
+        <strong>{{ form.name.label(class="form-label") }}</strong>
         {{ form.name(class="form-control") }}<br/>
 
-        {{ form.category.label(class="form-label") }}
+        <strong>{{ form.category.label(class="form-label") }}</strong>
         {{ form.category(class_="form-control") }}<br/>
 
-        {{ form.ingredients.label(class="form-label") }}
+        <strong>{{ form.image.label(class="form-label") }}</strong>
+        {{ form.image(class="form-control") }}<br/>
+
+        <strong>{{ form.ingredients.label(class="form-label") }}</strong>
         {{ form.ingredients(class="form-control") }}<br/>
 
-        {{ form.instructions.label(class="form-label") }}
+        <strong>{{ form.instructions.label(class="form-label") }}</strong>
         {{ form.instructions(class="form-control") }}<br/>
-
-        {{ form.image.label(class="form-label") }}
-        {{ form.image(class="form-control") }}<br/>
 
         {{ form.submit(class="btn btn-outline-primary") }}
         <a href="{{ url_for('routes.delete_recipe', id=id) }}" class="btn btn-danger">Delete</a>

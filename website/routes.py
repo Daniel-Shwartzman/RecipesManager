@@ -1,14 +1,41 @@
 import os
 from flask import Blueprint, render_template, flash, redirect, url_for, current_app, request
 from website.forms import RecipeForm, SearchForm
-from website.models import db, Recipe
+from website.models import db, Recipe, Favorite
 from werkzeug.utils import secure_filename
 
 routes = Blueprint('routes', __name__)
 
 @routes.route('/')
 def home():
-    return render_template('home.html')
+    favorites = Favorite.query.all()
+    return render_template('home.html', favorites=favorites)
+
+@routes.route('/add-to-favorites/<int:recipe_id>', methods=['POST'])
+def add_to_favorites(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)
+    # Check if the recipe is already in the favorites
+    existing_favorite = Favorite.query.filter_by(recipe_id=recipe_id).first()
+    if existing_favorite:
+        flash(f'Recipe {recipe.name} is already in your favorites!', 'danger')
+    else:
+        new_favorite = Favorite(recipe_id=recipe.id)
+        db.session.add(new_favorite)
+        db.session.commit()
+        flash(f'Recipe {recipe.name} added to favorites!', 'success')
+    return redirect(url_for('routes.home', id=recipe_id))
+
+@routes.route('/remove-from-favorites/<int:recipe_id>', methods=['POST'])
+def remove_from_favorites(recipe_id):
+    favorite = Favorite.query.filter_by(recipe_id=recipe_id).first()
+    if favorite:
+        db.session.delete(favorite)
+        db.session.commit()
+        flash('Recipe removed from favorites!', 'success')
+    else:
+        flash('Recipe not found in favorites!', 'danger')
+    return redirect(url_for('routes.home'))
+
 
 @routes.route('/create-recipe', methods=['GET', 'POST'])
 def create_recipe():
@@ -45,7 +72,9 @@ def create_recipe():
 @routes.route('/admin')
 def admin():
     our_recipes = Recipe.query.order_by(Recipe.date_created).all()
-    return render_template('admin.html', our_recipes=our_recipes)
+    favorite_recipes = Favorite.query.all() 
+    return render_template('admin.html', our_recipes=our_recipes, favorite_recipes=favorite_recipes)
+
 
 @routes.route('/salads')
 def salads():
@@ -81,7 +110,7 @@ def delete_recipe(id):
         flash('There was an issue deleting your recipe.', 'danger')
     return render_template('add-recipe.html', form=form, name=name)
 
-@routes.route('/recipes/<int:id>')
+@routes.route('/recipe/<int:id>')
 def recipe(id):
     recipe = Recipe.query.get_or_404(id)
     return render_template('recipe.html', recipe=recipe)
@@ -113,7 +142,7 @@ def update_recipe(id):
     return render_template('update.html', form=form, recipe_to_update=recipe_to_update, id=id)
 
 
-# Pass the form to the to Navbar
+# Pass the Search form to the to Navbar
 @routes.context_processor
 def base():
     form = SearchForm()
