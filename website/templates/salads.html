@@ -2,14 +2,28 @@
 
 {% block content %}
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endwith %}
+
 {% for salad in salads %}
-<div class="shadow p-3 mb-5 bg-body rounded w-50">
-    <h2>{{ salad.name }}</h2><hr>
+<div class="shadow p-3 mb-5 bg-body rounded w-50 position-relative">
+    <h2>{{ salad.name }}</h2>
+    <form action="{{ url_for('routes.add_to_favorites', recipe_id=salad.id) }}" method="POST" class="position-absolute" style="top: 20px; right: 10px;">
+        <button type="submit" class="btn btn-outline-success">Add to Favorites</button>
+    </form>
+    <hr>
     <br/>
     {% if salad.image %}
     <img src="{{ salad.image }}" width="300" height="200">
     <br/><br/>
-    {% endif %}    
+    {% endif %}   
+ 
     <a href="{{ url_for('routes.recipe', id=salad.id) }}" class="btn btn-outline-primary">View Recipe</a>
     <a href="{{ url_for('routes.update_recipe', id=salad.id) }}" class="btn btn-outline-primary">Update Recipe</a>
     <a href="{{ url_for('routes.delete_recipe', id=salad.id) }}" class="btn btn-outline-danger">Delete</a>

@@ -1,5 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hello, world!</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endwith %}
+
+
+
+<h1>Welcome to Shwartzman's Recipes</h1><hr>
+{% for favorite in favorites %}
+<div class="shadow p-3 mb-5 bg-body rounded w-50 position-relative">
+    <h2>{{ favorite.recipe.name }}</h2>
+    <form action="{{ url_for('routes.remove_from_favorites', recipe_id=favorite.recipe.id) }}" method="POST" class="position-absolute" style="top: 20px; right: 10px;">
+        <button type="submit" class="btn btn-outline-danger">Remove From Favorites</button>
+    </form>
+    <hr>
+    <br/>
+    {% if favorite.recipe.image %}
+    <img src="{{ favorite.recipe.image }}" width="300" height="200">
+    <br/><br/>
+    {% endif %}   
+ 
+    <a href="{{ url_for('routes.recipe', id=favorite.recipe.id) }}" class="btn btn-outline-primary">View Recipe</a>
+    <a href="{{ url_for('routes.update_recipe', id=favorite.recipe.id) }}" class="btn btn-outline-primary">Update Recipe</a>
+    <a href="{{ url_for('routes.delete_recipe', id=favorite.recipe.id) }}" class="btn btn-outline-danger">Delete</a>
+</div>
+{% endfor %}
+
+
 {% endblock %}

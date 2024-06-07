@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h2>All Recipes</h2><br/>
 <table class="table table-hover table-bordered table-striped">
     <tr>
         <th>ID</th>
@@ -10,15 +11,39 @@
         <th>Instructions</th>
         <th>Image</th>
     </tr>
-{% for recipe in our_recipes %}
+    {% for recipe in our_recipes %}
     <tr>
-    <td>{{ recipe.id }}<br/></td>
-    <td>{{ recipe.name }}<br/></td>  
-    <td>{{ recipe.category }}<br/></td>
-    <td>{{ recipe.ingredients }}<br/></td>
-    <td>{{ recipe.instructions }}</td>
-    <td><img src="{{ url_for('static', filename='images/' + recipe.image) }}" width="50" height="50"></td>
+        <td>{{ recipe.id }}</td>
+        <td>{{ recipe.name }}</td>  
+        <td>{{ recipe.category }}</td>
+        <td>{{ recipe.ingredients|safe }}</td>
+        <td>{{ recipe.instructions|safe }}</td>
+        <td><img src="{{ recipe.image }}" width="50" height="50"></td>
     </tr>
-{% endfor %}
+    {% endfor %}
+</table>
+
+<br/>
+
+<h2>Favorite Recipes</h2><br/>
+<table class="table table-hover table-bordered table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Recipe Name</th>
+        <th>Category</th>
+        <th>Ingredients</th>
+        <th>Instructions</th>
+        <th>Image</th>
+    </tr>
+    {% for favorite in favorite_recipes %}
+    <tr>
+        <td>{{ favorite.recipe.id }}</td>
+        <td>{{ favorite.recipe.name }}</td>  
+        <td>{{ favorite.recipe.category }}</td>
+        <td>{{ favorite.recipe.ingredients|safe }}</td>
+        <td>{{ favorite.recipe.instructions|safe }}</td>
+        <td><img src="{{ favorite.recipe.image }}" width="50" height="50"></td>
+    </tr>
+    {% endfor %}
 </table>
 {% endblock %}

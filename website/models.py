@@ -14,3 +14,11 @@ class Recipe(db.Model):
 
     def __repr__(self):
         return f'<Recipe {self.name}>'
+    
+class Favorite(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
+    recipe = db.relationship('Recipe', backref=db.backref('favorites', lazy=True))
+
+    def __repr__(self):
+        return f'<Favorite {self.recipe.name}>'

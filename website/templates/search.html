@@ -1,14 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <h2>You Searched For: <em>{{ searched }}</em></h2><br/>
 {% if not recipes %}
     <h3>No recipes with the name: <strong>{{ searched }}</strong> found...</h3>
 {% endif %}
 {% for recipe in recipes %}
-    <div class="shadow p-3 mb-5 bg-body rounded w-50">
-        <h2>{{ recipe.name }}</h2><hr>
+    <div class="shadow p-3 mb-5 bg-body rounded w-50 position-relative">
+        <h2>{{ recipe.name }}</h2>
+        <form action="{{ url_for('routes.add_to_favorites', recipe_id=recipe.id) }}" method="POST" class="position-absolute" style="top: 20px; right: 10px;">
+            <button type="submit" class="btn btn-outline-success">Add to Favorites</button>
+        </form>
+        <hr>
+        <br/>
+        {% if recipe.image %}
+        <img src="{{ recipe.image }}" width="300" height="200">
         <br/><br/>
+        {% endif %}
         <a href="{{ url_for('routes.recipe', id=recipe.id) }}" class="btn btn-outline-primary">View Recipe</a>
         <a href="{{ url_for('routes.update_recipe', id=recipe.id) }}" class="btn btn-outline-primary">Update Recipe</a>
         <a href="{{ url_for('routes.delete_recipe', id=recipe.id) }}" class="btn btn-outline-danger">Delete</a>

@@ -2,9 +2,22 @@
 
 {% block content %}
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endwith %}
+
 {% for dessert in desserts %}
-<div class="shadow p-3 mb-5 bg-body rounded w-50">
-    <h2>{{ dessert.name }}</h2><hr>
+<div class="shadow p-3 mb-5 bg-body rounded w-50 position-relative">
+    <h2>{{ dessert.name }}</h2>
+    <form action="{{ url_for('routes.add_to_favorites', recipe_id=dessert.id) }}" method="POST" class="position-absolute" style="top: 20px; right: 10px;">
+        <button type="submit" class="btn btn-outline-success">Add to Favorites</button>
+    </form>
+    <hr>
     <br/>
     {% if dessert.image %}
     <img src="{{ dessert.image }}" width="300" height="200">
